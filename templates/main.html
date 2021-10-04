@@ -2,14 +2,47 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Обработка данных</title>
+    <style>
+    .button div {
+    max-width: 6em; /* блок занимает ширину родителя, max-width её ограничивает */
+    min-height: 2em;
+    margin-left: auto;
+    margin-right: 8.0em;
+}
+    .text div {
+    max-width: 6em; /* блок занимает ширину родителя, max-width её ограничивает */
+    min-height: 2em;
+    margin-left: auto;
+    margin-right: 0em;
+    }
+    </style>
 </head>
 <body>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Upload</button>
+       <div class="button"> <div>{{ form.as_p }}</div></div>
+        <div class="text"> <div><button type="submit">Загрузить</button></div></div>
     </form>
-    <p><a href="{% url 'main' %}">Return to home</a></p>
+    <form method="post" enctype="multipart/form-data">
+        <div>Показатель</div>
+        <input type="text" name="name" required="required">
+        <div>Показатель</div>
+        <input type="text" name="name" required="required">
+        <div>Показатель</div>
+        <input type="text" name="name" required="required">
+        <div>Показатель</div>
+        <input type="text" name="name" required="required">
+        <div>Показатель</div>
+        <input type="text" name="name" required="required">
+        <div>Показатель</div>
+        <input type="text" name="name" required="required">
+        <div><input type="submit" name="submit_btn" value="Выполнить"></div>
+    </form>
+    <div>Отрисовка</div>
+    <div>Фильтрация</div>
+    <div>Вейвлет преобразование</div>
+    <div>Статистика</div>
+    <div align="right"><button type="submit">Сохранить</button></div>>
 </body>
 </html>
