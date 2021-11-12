@@ -19,7 +19,9 @@ def index(request):
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            doc = form.cleaned_data.get("document")  # получает текущий элемент
+            global doc
+            doc = form.cleaned_data.get("document")# получает текущий элемент
+            print(type(doc))
             return redirect('main')
     else:
         form = DocumentForm()
@@ -30,7 +32,9 @@ def index(request):
 def pars(document):
     x_ = []
     y_ = []
-
+    #document = open(docum, 'r')
+    #with open(docum) as document:
+    print(list)
     for line in document.readlines():
 
         for line2 in line.split("\n"):
@@ -46,8 +50,10 @@ def pars(document):
 
 
 def draw(request):
+    global doc
     if not doc:
-        pass
+        str = "File is not found"
+        return render(request, 'draw.html', {'str': str})
     else:
         x, y = pars(doc)
         fig = go.Figure()
@@ -55,3 +61,4 @@ def draw(request):
         graph = fig.to_html(full_html=False, default_height=500, default_widht=700)
         context = {'graph': graph}
         return render(request, 'draw.html', context)
+        # HttpResponse("Hi")
