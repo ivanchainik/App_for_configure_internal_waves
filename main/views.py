@@ -1,7 +1,7 @@
 from django.core.files import File
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from .forms import DocumentForm
+from .forms import DocumentForm, ValueForm
 from django.conf import settings
 from .models import Document
 import plotly
@@ -25,10 +25,10 @@ def index(request):
             global doc
             # docu = Document.objects.latest('document')
             doc = upload_file
-            #doc = form.cleaned_data.get("document")  # получает текущий элемент
+            # doc = form.cleaned_data.get("document")  # получает текущий элемент
             # doc = File(docu)
             print(type(upload_file))
-            #print(doc)
+            # print(doc)
             print(type(upload_file.read()))
             print(type(str(upload_file.read())))
             print(str(upload_file.read()))
@@ -43,9 +43,9 @@ def pars(document):
     x_ = []
     y_ = []
     print(document)
-    #document_ = document.file
-    #print(type(document_))
-    #print(document_.getvalue())
+    # document_ = document.file
+    # print(type(document_))
+    # print(document_.getvalue())
     # document = open(docum, 'r')
     media_dir = settings.MEDIA_ROOT
     root = str(media_dir) + '\\' + 'documents' + '\\' + str(document)
@@ -77,3 +77,19 @@ def draw(request):
         context = {'graph': graph}
         return render(request, 'draw.html', context)
         # HttpResponse("Hi")
+
+
+def get_value(request):
+    if request.method == 'POST':
+        form2 = ValueForm(request.POST)
+        if form2.is_valid():
+            font_size = form2.cleaned_data['font_size']
+            cutoff_freq = form2.cleaned_data['cutoff_freq']
+            decay_level = form2.cleaned_data['decay_level']
+            print(font_size)
+            print(cutoff_freq)
+            print(decay_level)
+    else:
+        form2 = ValueForm()
+
+    return render(request, 'filter.html', {'form2': form2})

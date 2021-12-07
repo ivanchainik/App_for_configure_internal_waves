@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Обработка данных - главная</title>
+    <title>{% block title %}{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
 <!--    <style>-->
 <!--    .button div {-->
@@ -20,7 +20,11 @@
 <!--    </style>-->
 </head>
 <body>
+
     <div class="w-100 bg-primary row m-0">
+        <div>
+            <a href="{% url 'main' %}"><font color="black">Главная</font></a>
+        </div>
         <div class="col-8 h-25" >
             <h3 class="m-3"></h3>
         </div>
@@ -28,7 +32,9 @@
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="text-center">
-                    <div>{{ form.as_p }}</div>
+                     <div><label for="id_document">Document</label>
+                        <input id="id_document" type="file" name="document">
+{#                    <div>{{ form.as_p }}</div>#}
                 </div>
                 <div class="text-center">
                     <div>
@@ -46,7 +52,7 @@
                     <a class="nav-link active fs-5 link-dark" href="{% url 'draw' %}">Отрисовка</a>
                 </li>
                 <li class="nav-item border border-dark text-center">
-                    <a class="nav-link fs-5 link-dark" href=" ">Фильтрация</a>
+                    <a class="nav-link fs-5 link-dark" href="{% url 'value' %}">Фильтрация</a>
                 </li>
                 <li class="nav-item border border-dark text-center">
                     <a class="nav-link fs-5 link-dark" href=" ">Вейвлет преобразование</a>
@@ -58,45 +64,46 @@
         </div>
 
         <div class="col-7">
-            Работа данных
+            {% block content %}{% endblock %}
         </div>
 
         <div class="col-3 bg-info" style="height: 500px; position:relative;">
-            <form method="post" enctype="multipart/form-data" class="mt-5" >
-
-                <div class="input-group flex-nowrap mt-1">
-                    <span class="input-group-text">@</span>
-                    <input type="text" class="form-control" placeholder="Username" required>
-                </div>
-
-                <div class="input-group flex-nowrap mt-1">
-                    <span class="input-group-text">@</span>
-                    <input type="text" class="form-control" placeholder="Username" required>
-                </div>
-
-                <div class="input-group flex-nowrap mt-1">
-                    <span class="input-group-text">@</span>
-                    <input type="text" class="form-control" placeholder="Username" required>
-                </div>
-
-                <div class="input-group flex-nowrap mt-1">
-                    <span class="input-group-text">@</span>
-                    <input type="text" class="form-control" placeholder="Username" required>
-                </div>
-
-                <div class="input-group flex-nowrap mt-1">
-                    <span class="input-group-text">@</span>
-                    <input type="text" class="form-control" placeholder="Username" required>
-                </div>
-
-                <div class="input-group flex-nowrap mt-1">
-                    <span class="input-group-text">@</span>
-                    <input type="text" class="form-control" placeholder="Username" required>
-                </div>
-
-                <button type="submit" class="btn btn-primary m-2">Выполнить</button>
-                <button type="submit" class="d-block align-bottom" style="position: absolute; bottom:10px;">Сохранить</button>
-    </form>
+            {% block colon_bar %}{% endblock %}
+{#            <form method="post" enctype="multipart/form-data" class="mt-5" >#}
+{##}
+{#                <div class="input-group flex-nowrap mt-1">#}
+{#                    <span class="input-group-text">@</span>#}
+{#                    <input type="text" class="form-control" placeholder="Username" required>#}
+{#                </div>#}
+{##}
+{#                <div class="input-group flex-nowrap mt-1">#}
+{#                    <span class="input-group-text">@</span>#}
+{#                    <input type="text" class="form-control" placeholder="Username" required>#}
+{#                </div>#}
+{##}
+{#                <div class="input-group flex-nowrap mt-1">#}
+{#                    <span class="input-group-text">@</span>#}
+{#                    <input type="text" class="form-control" placeholder="Username" required>#}
+{#                </div>#}
+{##}
+{#                <div class="input-group flex-nowrap mt-1">#}
+{#                    <span class="input-group-text">@</span>#}
+{#                    <input type="text" class="form-control" placeholder="Username" required>#}
+{#                </div>#}
+{##}
+{#                <div class="input-group flex-nowrap mt-1">#}
+{#                    <span class="input-group-text">@</span>#}
+{#                    <input type="text" class="form-control" placeholder="Username" required>#}
+{#                </div>#}
+{##}
+{#                <div class="input-group flex-nowrap mt-1">#}
+{#                    <span class="input-group-text">@</span>#}
+{#                    <input type="text" class="form-control" placeholder="Username" required>#}
+{#                </div>#}
+{##}
+{#                <button type="submit" class="btn btn-primary m-2">Выполнить</button>#}
+{#                <button type="submit" class="d-block align-bottom" style="position: absolute; bottom:10px;">Сохранить</button>#}
+{#    </form>#}
         </div>
     </div>
 </body>
