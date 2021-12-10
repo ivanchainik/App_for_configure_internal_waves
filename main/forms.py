@@ -9,10 +9,12 @@ class DocumentForm(forms.ModelForm):
 
 
 class ValueForm(forms.ModelForm):
-    font_size = forms.IntegerField()
     cutoff_freq = forms.FloatField()
-    decay_level = forms.IntegerField()
+    decay_level = forms.FloatField()
+    delta_F = forms.FloatField()
+    Rp = forms.FloatField(required=False)
+    Rs = forms.FloatField(required=False)
 
     class Meta:
         model = Value
-        fields = ('font_size', 'cutoff_freq', 'decay_level')
+        fields = ('cutoff_freq', 'decay_level', 'delta_F', 'Rp', 'Rs')

@@ -1,17 +1,51 @@
 {% extends 'main.html' %}
 {% block title %}Фильтрация{% endblock %}
+<head>
+    <script type="text/javascript">
+function ifelsefunction() {
+var seltheme = document.getElementById("setfilter").value;
+
+
+    if(seltheme == "Hann"){
+
+        {{ graph_Hann|safe }}
+
+    }
+    else if (seltheme == "Chebyshev"){
+        {{ graph_Chebyshev|safe }}
+    }
+
+    else{
+        <p>График не выбран</p>
+    }
+}
+</script>
+</head>
 {% block colon_bar %}
-    <form method="post" enctype="multipart/form-data" class="mt-5" >
+
+        <div>
+        <select id="setfilter" name="Фильтры">
+            <option value = 'Hann'>Hann</option>
+            <option value="Chebyshev">Chebyshev</option>
+        </select>
+        </div>
+            <form method="post" enctype="multipart/form-data" class="mt-5" >
         {% csrf_token %}
-        <p><label for="id_font_size">Font Size</label>
-            <input id="id_font_size" type="number" name="font_size" required></p>
 
         <p><label for="id_cutoff_freq">cutoff_freq</label>
-            <input id="id_cutoff_freq" type="number" name="cutoff_freq" required></p>
+            <input id="id_cutoff_freq" type="number" name="cutoff_freq" step="any" required></p>
 
         <p><label for="id_decay_level">decay_level</label>
-            <input id="id_decay_level" type="number" name="decay_level" required></p>
-        <p><button type="submit" class="btn btn-light">Выполнить</button></p>
+            <input id="id_decay_level" type="number" name="decay_level" step="any" required></p>
+
+        <p><label for="id_delta_F">delta F</label>
+            <input id="id_delta_F" type="number" name="delta_F" step="any" required></p>
+
+        <p><label for="id_Rp">Rp</label>
+            <input id="id_Rp" type="number" step="any" name="Rp"></p>
+
+        <p><label for="id_Rs">Rs</label>
+            <input id="id_Rs" type="number" step="any" name="Rs"></p>
 
 {#                <div class="input-group flex-nowrap mt-1">#}
 {#                    <span class="input-group-number">@</span>#}
@@ -28,5 +62,10 @@
 {#                    <input type="number" class="form-control" placeholder="Decay Level" required>#}
 {#                </div>#}
 {#                <button type="submit" class="btn btn-primary m-2">Выполнить</button>#}
+            <p><button type="submit" class="btn btn-light">Отправить данные</button></p>
     </form>
+
+    <p><button onclick=ifelsefunction() type="submit" class="btn btn-light">Построить график</button></p>
+
+
 {% endblock %}

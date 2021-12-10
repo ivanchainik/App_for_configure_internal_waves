@@ -12,6 +12,9 @@ from plotly.subplots import make_subplots
 import pandas as pd
 import openpyxl
 import xlrd
+import math as m
+from scipy.signal import filtfilt, firwin, kaiserord, cheb1ord, cheby1, zpk2sos, sosfilt, cheby2, cheb2ord, butter, \
+    buttord, ellipord, savgol_filter
 
 doc = None
 
@@ -27,11 +30,11 @@ def index(request):
             doc = upload_file
             # doc = form.cleaned_data.get("document")  # получает текущий элемент
             # doc = File(docu)
-            print(type(upload_file))
+            # print(type(upload_file))
             # print(doc)
-            print(type(upload_file.read()))
-            print(type(str(upload_file.read())))
-            print(str(upload_file.read()))
+            # print(type(upload_file.read()))
+            # print(type(str(upload_file.read())))
+            # print(str(upload_file.read()))
             return redirect('main')
     else:
         form = DocumentForm()
@@ -42,7 +45,7 @@ def index(request):
 def pars(document):
     x_ = []
     y_ = []
-    print(document)
+    # print(document)
     # document_ = document.file
     # print(type(document_))
     # print(document_.getvalue())
@@ -83,13 +86,112 @@ def get_value(request):
     if request.method == 'POST':
         form2 = ValueForm(request.POST)
         if form2.is_valid():
-            font_size = form2.cleaned_data['font_size']
             cutoff_freq = form2.cleaned_data['cutoff_freq']
             decay_level = form2.cleaned_data['decay_level']
-            print(font_size)
-            print(cutoff_freq)
-            print(decay_level)
+            delta_F = form2.cleaned_data['delta_F']
+            Rp = form2.cleaned_data['Rp']
+            Rs = form2.cleaned_data['Rs']
+            graph_Hann = Hann(cutoff_freq, decay_level, delta_F)
+            graph_Chebyshev = Chebyshev(cutoff_freq, decay_level, delta_F, Rp, Rs)
+            # print(font_size)
+            # print(cutoff_freq)
+            # print(decay_level)
+            return render(request, 'filter.html',
+                          {'form2': form2, 'graph_Hann': graph_Hann, 'graph_Chebyshev': graph_Chebyshev, })
     else:
         form2 = ValueForm()
+        return render(request, 'filter.html', {'form2': form2})
 
-    return render(request, 'filter.html', {'form2': form2})
+
+def Hann(cutoff_freq, decay_level, delta_F, ):
+    global doc
+    z, t = pars(doc)
+    z = [int(item) for item in z]
+    t = [int(item) for item in t]
+    Nn = len(z)
+    dt = t[2] - t[1]
+    fs = 1 / dt  # in Hz
+    fN = fs / 2
+    fontSize = 14
+    # cutoff_freq = 1 / 120  # in Hz
+    # delta_F = cutoff_freq / 10
+    # decay_level = 30  # in dB
+
+    # Window variables
+    delta_F_norm = delta_F / fs
+    N = m.ceil(3.3 / delta_F_norm)
+
+    # Original plot
+    # plt.plot(t, z)
+    # font = {'family': 'serif', 'color': 'black', 'weight': 'normal', 'size': 22}
+    # plt.xlabel("t, часы", fontdict=font)
+    # plt.ylabel("z, метры", fontdict=font)
+
+    # plt.xticks(ticks=np.arange(0, len(t), step=3600), labels=np.arange(0, xo + 1, step=1))
+    # plt.tick_params(axis='both', which='major', labelsize=16)
+
+    figure = go.Figure()
+    figure.add_trace(go.Scatter(x=t, y=z, name='Original'))
+    xo = len(t) / 3600
+    xo = int(xo)
+    figure.update_layout(xaxis_title='t, часы',
+                         yaxis_title='z, метры',
+                         xaxis=dict(
+                             tickmode='array',
+                             tickvals=np.arange(0, len(t), step=3600),
+                             ticktext=np.arange(0, xo + 1, step=1),
+                         ))
+    # Window
+    b_han = firwin(N, cutoff_freq / fN, window='hann', pass_zero='lowpass')
+    y5 = filtfilt(b_han, 1, z)
+    figure.add_trace(go.Scatter(x=t, y=y5, name='Filter'))
+    graph = figure.to_html(full_html=False, default_height=500, default_width=500)
+    return graph
+    # plt.plot(t, y5, color='red')
+    # plt.show()
+
+
+def Chebyshev(cutoff_freq, decay_level, delta_F, Rp, Rs):
+    global doc
+    z, t = pars(doc)
+    z = [int(item) for item in z]
+    t = [int(item) for item in t]
+    # Global Variables
+    Nn = len(z)
+    dt = t[2] - t[1]
+    fs = 1 / dt  # in Hz
+    fN = fs / 2
+    fontSize = 14
+    # cutoff_freq = 1 / 120  # in Hz
+    # delta_F = cutoff_freq / 10
+    # decay_level = 30  # in dB
+
+    # Window variables
+    delta_F_norm = delta_F / fs
+    N = m.ceil(3.3 / delta_F_norm)
+
+    # Chebyshev variables
+    Wp = cutoff_freq / fN
+    Ws = (cutoff_freq + delta_F) / fN
+    # Rp = 3
+    # Rs = 30  # in dB, decay level for passband and stopband
+
+    figure = go.Figure()
+    figure.add_trace(go.Scatter(x=t, y=z, name='Original'))
+    xo = len(t) / 3600
+    xo = int(xo)
+    figure.update_layout(xaxis_title='t, часы',
+                         yaxis_title='z, метры',
+                         xaxis=dict(
+                             tickmode='array',
+                             tickvals=np.arange(0, len(t), step=3600),
+                             ticktext=np.arange(0, xo + 1, step=1),
+                         ))
+
+    N5, Wp1 = cheb1ord(Wp, Ws, Rp, Rs)
+
+    b_cheb = firwin(N5, cutoff_freq / fN, window=('chebwin', Wp1), pass_zero='lowpass')  # STAB 46 Db, need rework
+    y9 = filtfilt(b_cheb, 1, z)
+    figure.add_trace(go.Scatter(x=t, y=y9, name='Filter'))
+    graph = figure.to_html(full_html=False, default_height=500, default_width=500)
+    return graph
