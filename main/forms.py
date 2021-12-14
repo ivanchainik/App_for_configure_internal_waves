@@ -10,7 +10,7 @@ class DocumentForm(forms.ModelForm):
 
 class ValueForm(forms.ModelForm):
     cutoff_freq = forms.FloatField()
-    decay_level = forms.FloatField()
+    decay_level = forms.IntegerField()
     delta_F = forms.FloatField()
     Rp = forms.FloatField(required=False)
     Rs = forms.FloatField(required=False)

@@ -74,8 +74,10 @@ def draw(request):
         return render(request, 'draw.html', {'str': str})
     else:
         x, y = pars(doc)
+        x = [float(item) for item in x]
+        y = [float(item) for item in y]
         fig = go.Figure()
-        fig.add_trace(go.Scatter(x=x, y=y, mode='markers+lines', name='Исходный график'))
+        fig.add_trace(go.Scatter(x=x, y=y, mode='lines', name='Исходный график'))
         graph = fig.to_html(full_html=False, default_height=500, default_width=500)
         context = {'graph': graph}
         return render(request, 'draw.html', context)
@@ -86,36 +88,43 @@ def get_value(request):
     if request.method == 'POST':
         form2 = ValueForm(request.POST)
         if form2.is_valid():
-            cutoff_freq = form2.cleaned_data['cutoff_freq']
-            decay_level = form2.cleaned_data['decay_level']
-            delta_F = form2.cleaned_data['delta_F']
+            cutoff_freq = float(form2.cleaned_data['cutoff_freq'])
+            decay_level = int(form2.cleaned_data['decay_level'])
+            delta_F = float(form2.cleaned_data['delta_F'])
             Rp = form2.cleaned_data['Rp']
             Rs = form2.cleaned_data['Rs']
-            graph_Hann = Hann(cutoff_freq, decay_level, delta_F)
-            graph_Chebyshev = Chebyshev(cutoff_freq, decay_level, delta_F, Rp, Rs)
+            print(cutoff_freq)
+            print(decay_level)
+            print(delta_F)
+            print(Rs)
+            print(Rs)
+            print(type(cutoff_freq))
+            print(type(decay_level))
+            print(type(delta_F))
+            if(cutoff_freq):
+                Hann(request, cutoff_freq, decay_level, delta_F)
+            #graph_Chebyshev = Chebyshev(cutoff_freq, decay_level, delta_F, Rp, Rs)
             # print(font_size)
-            # print(cutoff_freq)
-            # print(decay_level)
-            return render(request, 'filter.html',
-                          {'form2': form2, 'graph_Hann': graph_Hann, 'graph_Chebyshev': graph_Chebyshev, })
+
+            return render(request, 'filter.html', {'form2': form2})
     else:
         form2 = ValueForm()
         return render(request, 'filter.html', {'form2': form2})
 
 
-def Hann(cutoff_freq, decay_level, delta_F, ):
+def Hann(request, cutoff_freq=0.0083, decay_level=30, delta_F=0.00083):
     global doc
     z, t = pars(doc)
-    z = [int(item) for item in z]
-    t = [int(item) for item in t]
+    z = [float(item) for item in z]
+    t = [float(item) for item in t]
     Nn = len(z)
     dt = t[2] - t[1]
     fs = 1 / dt  # in Hz
     fN = fs / 2
     fontSize = 14
-    # cutoff_freq = 1 / 120  # in Hz
-    # delta_F = cutoff_freq / 10
-    # decay_level = 30  # in dB
+    #cutoff_freq = 0.008  # in Hz
+    #delta_F = 0.00083
+    #decay_level = 30  # in dB
 
     # Window variables
     delta_F_norm = delta_F / fs
@@ -123,30 +132,26 @@ def Hann(cutoff_freq, decay_level, delta_F, ):
 
     # Original plot
     # plt.plot(t, z)
-    # font = {'family': 'serif', 'color': 'black', 'weight': 'normal', 'size': 22}
+    # font = {'family': 'serif', 'color':  'black', 'weight': 'normal', 'size': 22}
     # plt.xlabel("t, часы", fontdict=font)
     # plt.ylabel("z, метры", fontdict=font)
-
-    # plt.xticks(ticks=np.arange(0, len(t), step=3600), labels=np.arange(0, xo + 1, step=1))
+    # xo = len(t) / 3600
+    # xo = int(xo)
+    # plt.xticks(ticks = np.arange(0, len(t), step = 3600), labels= np.arange(0, xo + 1, step = 1))
     # plt.tick_params(axis='both', which='major', labelsize=16)
 
-    figure = go.Figure()
-    figure.add_trace(go.Scatter(x=t, y=z, name='Original'))
-    xo = len(t) / 3600
-    xo = int(xo)
-    figure.update_layout(xaxis_title='t, часы',
-                         yaxis_title='z, метры',
-                         xaxis=dict(
-                             tickmode='array',
-                             tickvals=np.arange(0, len(t), step=3600),
-                             ticktext=np.arange(0, xo + 1, step=1),
-                         ))
     # Window
     b_han = firwin(N, cutoff_freq / fN, window='hann', pass_zero='lowpass')
     y5 = filtfilt(b_han, 1, z)
-    figure.add_trace(go.Scatter(x=t, y=y5, name='Filter'))
-    graph = figure.to_html(full_html=False, default_height=500, default_width=500)
-    return graph
+    # plt.plot(t, y5, color='red')
+    # plt.show()
+
+    figure = go.Figure()
+    figure.add_trace(go.Scatter(x=t, y=z, mode='lines', name='Original'))
+    figure.add_trace(go.Scatter(x=t, y=y5, mode='lines', name='Filter'))
+    #figure.show()
+    graph1 = figure.to_html(full_html=False, default_height=500, default_width=500)
+    return render (request, 'filter.html', {'graph1': graph1})
     # plt.plot(t, y5, color='red')
     # plt.show()
 
@@ -154,8 +159,8 @@ def Hann(cutoff_freq, decay_level, delta_F, ):
 def Chebyshev(cutoff_freq, decay_level, delta_F, Rp, Rs):
     global doc
     z, t = pars(doc)
-    z = [int(item) for item in z]
-    t = [int(item) for item in t]
+    z = [float(item) for item in z]
+    t = [float(item) for item in t]
     # Global Variables
     Nn = len(z)
     dt = t[2] - t[1]

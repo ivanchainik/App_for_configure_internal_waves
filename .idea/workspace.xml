@@ -5,18 +5,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/documents/1.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/documents/1_83EoTqw.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/documents/1_8I5gNaz.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/documents/1_RGifCxh.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/documents/1_aaYkMNz.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/documents/1_aj94R96.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/documents/1_dUnwqg0.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/documents/1_nTyU4fl.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/documents/1_uKUHZBD.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/documents/1_upur7f0.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/documents/1_wvbefbZ.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/documents/1_zxBHQou.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/filter.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/filter.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -46,7 +34,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Windows, KIH, BIR Code/Hann.py" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunManager">
@@ -99,7 +87,11 @@
       <workItem from="1638864090630" duration="7874000" />
       <workItem from="1638959942317" duration="3371000" />
       <workItem from="1639047778682" duration="5827000" />
-      <workItem from="1639124137097" duration="817000" />
+      <workItem from="1639124137097" duration="842000" />
+      <workItem from="1639133931994" duration="3130000" />
+      <workItem from="1639383370818" duration="1509000" />
+      <workItem from="1639385059031" duration="2009000" />
+      <workItem from="1639474223042" duration="1920000" />
     </task>
     <servers />
   </component>
