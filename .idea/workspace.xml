@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="87af6e65-3687-4818-8c63-7453df581e8e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/filter.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/filter.html" afterDir="false" />
     </list>
@@ -11,6 +10,9 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -34,7 +36,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Windows, KIH, BIR Code/Hann.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunManager">
@@ -92,6 +94,15 @@
       <workItem from="1639383370818" duration="1509000" />
       <workItem from="1639385059031" duration="2009000" />
       <workItem from="1639474223042" duration="1920000" />
+      <workItem from="1639572053917" duration="1053000" />
+      <workItem from="1639573145313" duration="637000" />
+      <workItem from="1640159064092" duration="2288000" />
+      <workItem from="1640247421513" duration="1469000" />
+      <workItem from="1640683219602" duration="515000" />
+      <workItem from="1643181048650" duration="65000" />
+      <workItem from="1644824277830" duration="2758000" />
+      <workItem from="1644915679428" duration="2955000" />
+      <workItem from="1644998952485" duration="1515000" />
     </task>
     <servers />
   </component>

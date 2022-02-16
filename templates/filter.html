@@ -1,36 +1,40 @@
 {% extends 'main.html' %}
 {% block title %}Фильтрация{% endblock %}
-{#<head>#}
-{#    <script type="text/javascript">#}
-{#function ifelsefunction() {#}
-{#var seltheme = document.getElementById("setfilter").value;#}
-{##}
-{##}
-{#    if(seltheme == "Hann"){#}
-{##}
-{#        {{ graph1|safe }}#}
-{##}
-{#    }#}
-{#    else if (seltheme == "Chebyshev"){#}
-{#        {{ graph_Chebyshev|safe }}#}
-{#        <p>График не выбран</p>#}
-{#    }#}
-{##}
-{#    else{#}
-{#        <p>График не выбран</p>#}
-{#    }#}
-{#}#}
-{#</script>#}
-{#</head>#}
+<head>
+    <script type="text/javascript">
+function ifelsefunction() {
+var seltheme = document.getElementById("setfilter").value;
+
+
+    if(seltheme == "Hann"){
+        {% block content %}
+            {{ graph_Hann|safe }}
+        {% endblock %}
+
+    }
+    else if (seltheme == "Chebyshev"){
+
+        {% block content %}
+            {{ graph_Chebyshev|safe }}
+        {% endblock %}
+        <p>График не выбран</p>
+    }
+
+    else{
+        <p>График не выбран</p>
+    }
+}
+</script>
+</head>
 {% block colon_bar %}
 
-{#        <div>#}
-{#        <select id="setfilter" name="Фильтры">#}
-{#            <option value = 'Hann'>Hann</option>#}
-{#            <option value= "Chebyshev">Chebyshev</option>#}
-{#        </select>#}
-{#        <p><button onclick=ifelsefunction() type="submit" class="btn btn-light">Построить график</button></p>#}
-{#        </div>#}
+        <div>
+        <select id="setfilter" name="Фильтры">
+            <option value = 'Hann'>Hann</option>
+            <option value= "Chebyshev">Chebyshev</option>
+        </select>
+        <p><button onclick=ifelsefunction() type="submit" class="btn btn-light">Построить график</button></p>
+        </div>
             <form method="post" enctype="multipart/form-data" class="mt-5" >
         {% csrf_token %}
 
@@ -72,6 +76,3 @@
 
 {% endblock %}
 
-{% block content %}
-    {{ graph1|safe }}
-{% endblock %}

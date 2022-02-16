@@ -13,6 +13,7 @@ import pandas as pd
 import openpyxl
 import xlrd
 import math as m
+import matplotlib.pyplot as plt
 from scipy.signal import filtfilt, firwin, kaiserord, cheb1ord, cheby1, zpk2sos, sosfilt, cheby2, cheb2ord, butter, \
     buttord, ellipord, savgol_filter
 
@@ -102,28 +103,46 @@ def get_value(request):
             print(type(decay_level))
             print(type(delta_F))
             if(cutoff_freq):
-                Hann(request, cutoff_freq, decay_level, delta_F)
-            #graph_Chebyshev = Chebyshev(cutoff_freq, decay_level, delta_F, Rp, Rs)
+                graph_Hann = Hann(cutoff_freq, decay_level, delta_F)
+            if(Rs):
+                graph_Chebyshev = Chebyshev(cutoff_freq, decay_level, delta_F, Rp, Rs)
             # print(font_size)
 
-            return render(request, 'filter.html', {'form2': form2})
+            return render(request, 'filter.html', {'form2': form2, 'graph_Hann': graph_Hann, 'graph_Chebyshev': graph_Chebyshev})
     else:
         form2 = ValueForm()
         return render(request, 'filter.html', {'form2': form2})
 
 
-def Hann(request, cutoff_freq=0.0083, decay_level=30, delta_F=0.00083):
+def Hann(cutoff_freq, decay_level, delta_F):
     global doc
-    z, t = pars(doc)
-    z = [float(item) for item in z]
+    print(doc)
+    t = []
+    z = []
+    root = str(settings.MEDIA_ROOT) + '\\' + 'documents' + '\\' + str(doc)
+    with open(root) as document:
+        for line in document.readlines():
+
+            for line2 in line.split("\n"):
+
+                if not line2.strip():
+                    continue
+
+                t_, z_ = [word.strip() for word in line2.split(" ")]
+                t.append(t_)
+                z.append(z_)
+
     t = [float(item) for item in t]
+    z = [float(item) for item in z]
+
+    # Global Variables
     Nn = len(z)
     dt = t[2] - t[1]
     fs = 1 / dt  # in Hz
     fN = fs / 2
     fontSize = 14
-    #cutoff_freq = 0.008  # in Hz
-    #delta_F = 0.00083
+    #cutoff_freq = 1 / 120  # in Hz
+    #delta_F = cutoff_freq / 10
     #decay_level = 30  # in dB
 
     # Window variables
@@ -132,12 +151,12 @@ def Hann(request, cutoff_freq=0.0083, decay_level=30, delta_F=0.00083):
 
     # Original plot
     # plt.plot(t, z)
-    # font = {'family': 'serif', 'color':  'black', 'weight': 'normal', 'size': 22}
+    # font = {'family': 'serif', 'color': 'black', 'weight': 'normal', 'size': 22}
     # plt.xlabel("t, часы", fontdict=font)
     # plt.ylabel("z, метры", fontdict=font)
     # xo = len(t) / 3600
     # xo = int(xo)
-    # plt.xticks(ticks = np.arange(0, len(t), step = 3600), labels= np.arange(0, xo + 1, step = 1))
+    # plt.xticks(ticks=np.arange(0, len(t), step=3600), labels=np.arange(0, xo + 1, step=1))
     # plt.tick_params(axis='both', which='major', labelsize=16)
 
     # Window
@@ -145,20 +164,30 @@ def Hann(request, cutoff_freq=0.0083, decay_level=30, delta_F=0.00083):
     y5 = filtfilt(b_han, 1, z)
     # plt.plot(t, y5, color='red')
     # plt.show()
-
     figure = go.Figure()
     figure.add_trace(go.Scatter(x=t, y=z, mode='lines', name='Original'))
     figure.add_trace(go.Scatter(x=t, y=y5, mode='lines', name='Filter'))
     #figure.show()
     graph1 = figure.to_html(full_html=False, default_height=500, default_width=500)
-    return render (request, 'filter.html', {'graph1': graph1})
-    # plt.plot(t, y5, color='red')
-    # plt.show()
+    return graph1
 
 
 def Chebyshev(cutoff_freq, decay_level, delta_F, Rp, Rs):
     global doc
-    z, t = pars(doc)
+    t = []
+    z = []
+    root = str(settings.MEDIA_ROOT) + '\\' + 'documents' + '\\' + str(doc)
+    with open(root) as document:
+        for line in document.readlines():
+
+            for line2 in line.split("\n"):
+
+                if not line2.strip():
+                    continue
+
+                t_, z_ = [word.strip() for word in line2.split(" ")]
+                t.append(t_)
+                z.append(z_)
     z = [float(item) for item in z]
     t = [float(item) for item in t]
     # Global Variables
