@@ -102,13 +102,17 @@ def get_value(request):
             print(type(cutoff_freq))
             print(type(decay_level))
             print(type(delta_F))
-            if(cutoff_freq):
+            if(not Rs):
                 graph_Hann = Hann(cutoff_freq, decay_level, delta_F)
+                return render(request, 'filter.html',
+                              {'form2': form2, 'graph_Hann': graph_Hann})
             if(Rs):
                 graph_Chebyshev = Chebyshev(cutoff_freq, decay_level, delta_F, Rp, Rs)
+                return render(request, 'filter.html',
+                              {'form2': form2, 'graph_Chebyshev': graph_Chebyshev})
             # print(font_size)
 
-            return render(request, 'filter.html', {'form2': form2, 'graph_Hann': graph_Hann, 'graph_Chebyshev': graph_Chebyshev})
+
     else:
         form2 = ValueForm()
         return render(request, 'filter.html', {'form2': form2})
@@ -166,7 +170,7 @@ def Hann(cutoff_freq, decay_level, delta_F):
     # plt.show()
     figure = go.Figure()
     figure.add_trace(go.Scatter(x=t, y=z, mode='lines', name='Original'))
-    figure.add_trace(go.Scatter(x=t, y=y5, mode='lines', name='Filter'))
+    figure.add_trace(go.Scatter(x=t, y=y5, mode='lines', name='Hann'))
     #figure.show()
     graph1 = figure.to_html(full_html=False, default_height=500, default_width=500)
     return graph1
@@ -226,6 +230,6 @@ def Chebyshev(cutoff_freq, decay_level, delta_F, Rp, Rs):
 
     b_cheb = firwin(N5, cutoff_freq / fN, window=('chebwin', Wp1), pass_zero='lowpass')  # STAB 46 Db, need rework
     y9 = filtfilt(b_cheb, 1, z)
-    figure.add_trace(go.Scatter(x=t, y=y9, name='Filter'))
+    figure.add_trace(go.Scatter(x=t, y=y9, name='Chebyshev'))
     graph = figure.to_html(full_html=False, default_height=500, default_width=500)
     return graph
